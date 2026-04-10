@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component 6 - Focus Indicator Fix</title>
+  <style>
+    /* basic page reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: sans-serif;
+      background: #f5f0eb;
+      color: #1a1a1a;
+      padding: 2rem;
+    }
+
+    /* explanation comment block */
+    .comment-block {
+      background: #fff8f0;
+      border-left: 4px solid #a0522d;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    .comment-block h2 { margin-bottom: 0.5rem; color: #a0522d; }
+    .comment-block p, .comment-block li { line-height: 1.6; margin-top: 0.4rem; }
+    .comment-block ul { padding-left: 1.2rem; }
+
+    /* section labels */
+    .section-label {
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .before-label { color: #b00020; }
+    .after-label  { color: #1a7a1a; }
+
+    /* side-by-side demo layout */
+    .demo-wrapper {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 960px;
+    }
+
+    .demo-box {
+      flex: 1;
+      min-width: 300px;
+      background: #fff;
+      border-radius: 6px;
+      padding: 1.5rem;
+      border: 1px solid #ddd;
+    }
+
+    /* ------- BEFORE: site's broken global rule ------- */
+
+    /* nav bar */
+    .nav {
+      background: #4a2c17;
+      padding: 0.8rem 1.2rem;
+      display: flex;
+      gap: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    .nav a {
+      color: #f5c97a;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    /* newsletter form area */
+    .form-area {
+      background: #4a2c17;
+      color: #fff;
+      padding: 1.2rem;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .form-area h3 { color: #f5c97a; font-size: 1rem; margin-bottom: 0.4rem; }
+    .form-area p  { color: #e8d5c0; font-size: 0.85rem; margin-bottom: 0.8rem; }
+
+    .form-area input[type="email"] {
+      width: 100%;
+      padding: 0.5rem 0.7rem;
+      margin-bottom: 0.5rem;
+      border: none;
+      border-radius: 3px;
+      font-size: 0.9rem;
+    }
+
+    .form-area button {
+      background: #c8601a;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    /* code snippet display */
+    pre {
+      background: #1a1a1a;
+      color: #f5f5f5;
+      padding: 0.8rem;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      overflow-x: auto;
+      margin-top: 0.8rem;
+      white-space: pre-wrap;
+    }
+
+    /* ------- BEFORE box: removes all outlines (the bug) ------- */
+    .before-box a:focus,
+    .before-box button:focus,
+    .before-box input:focus {
+      outline: none; /* this is the broken rule from ozocoffee.com */
+    }
+
+    /* ------- AFTER box: restores focus visibility (the fix) ------- */
+
+    /* dark background elements (nav links) get a light outline */
+    .after-box .nav a:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    /* light background elements (form inputs, buttons) get a dark outline */
+    .after-box .form-area input:focus-visible,
+    .after-box .form-area button:focus-visible {
+      outline: 3px solid #1a1a1a;
+      outline-offset: 2px;
+    }
+
+    /* visually-hidden label helper (same as component 5) */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: #666;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- explanation comment block -->
+  <div class="comment-block">
+    <h2>Component 6 — Focus Indicator Fix</h2>
+    <p><strong>Issue:</strong> ozocoffee.com applies <code>outline: none</code> globally to all <code>a</code>, <code>button</code>, and <code>input</code> elements, removing all keyboard focus visibility.</p>
+    <ul>
+      <li>Override with <code>:focus-visible</code> — not <code>:focus</code> — so mouse users are unaffected</li>
+      <li>Dark-background elements (brown nav) get a white outline</li>
+      <li>Light-background elements (form inputs/buttons) get a dark outline</li>
+    </ul>
+    <p><strong>WCAG:</strong> 2.4.7 Focus Visible (Level AA)</p>
+    <p class="hint">Tab through each demo below to see the difference.</p>
+  </div>
+
+  <div class="demo-wrapper">
+
+    <!-- BEFORE -->
+    <div class="demo-box before-box">
+      <div class="section-label before-label">BEFORE (broken) — Tab through, no focus ring</div>
+
+      <nav class="nav">
+        <a href="#">Menu</a>
+        <a href="#">About</a>
+        <a href="#">Order</a>
+      </nav>
+
+      <div class="form-area">
+        <h3>Stay Connected</h3>
+        <p>Straight to your inbox.</p>
+        <form>
+          <label for="email-before" class="visually-hidden">Email Address</label>
+          <input type="email" id="email-before" placeholder="Your Email Address">
+          <button type="submit">STAY UPDATED</button>
+        </form>
+      </div>
+
+      <pre>
+// site's global rule kills all focus rings
+a, button, input {
+  outline: none;
+}
+      </pre>
+    </div>
+
+    <!-- AFTER -->
+    <div class="demo-box after-box">
+      <div class="section-label after-label">AFTER (fixed) — Tab through to see focus rings</div>
+
+      <nav class="nav">
+        <a href="#">Menu</a>
+        <a href="#">About</a>
+        <a href="#">Order</a>
+      </nav>
+
+      <div class="form-area">
+        <h3>Stay Connected</h3>
+        <p>Straight to your inbox.</p>
+        <form>
+          <label for="email-after" class="visually-hidden">Email Address</label>
+          <input type="email" id="email-after" placeholder="Your Email Address">
+          <button type="submit">STAY UPDATED</button>
+        </form>
+      </div>
+
+      <pre>
+// dark bg: white outline for nav links
+.nav a:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+}
+// light bg: dark outline for form elements
+input:focus-visible,
+button:focus-visible {
+  outline: 3px solid #1a1a1a;
+  outline-offset: 2px;
+}
+      </pre>
+    </div>
+
+  </div>
+
+</body>
+</html>

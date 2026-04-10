@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Component 5 - Newsletter Email Label Fix</title>
+  <style>
+    /* basic page reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: sans-serif;
+      background: #f5f0eb;
+      color: #1a1a1a;
+      padding: 2rem;
+    }
+
+    /* explanation comment block */
+    .comment-block {
+      background: #fff8f0;
+      border-left: 4px solid #a0522d;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    .comment-block h2 { margin-bottom: 0.5rem; color: #a0522d; }
+    .comment-block p, .comment-block li { line-height: 1.6; margin-top: 0.4rem; }
+    .comment-block ul { padding-left: 1.2rem; }
+
+    /* section labels */
+    .section-label {
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .before-label { color: #b00020; }
+    .after-label  { color: #1a7a1a; }
+
+    /* demo containers */
+    .demo-wrapper {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 900px;
+    }
+
+    .demo-box {
+      flex: 1;
+      min-width: 280px;
+      background: #fff;
+      border-radius: 6px;
+      padding: 1.5rem;
+      border: 1px solid #ddd;
+    }
+
+    /* Ozo-style brown background for the form area */
+    .page-width {
+      background: #4a2c17;
+      color: #fff;
+      padding: 1.5rem;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .page-width h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+      color: #f5c97a;
+    }
+
+    .page-width p {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      color: #e8d5c0;
+    }
+
+    .page-width input[type="email"] {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      margin-bottom: 0.6rem;
+      border: none;
+      border-radius: 3px;
+      font-size: 0.95rem;
+    }
+
+    .page-width button {
+      background: #c8601a;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .page-width button:hover { background: #a04e12; }
+
+    /* code snippet display */
+    pre {
+      background: #1a1a1a;
+      color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      margin-top: 0.8rem;
+      white-space: pre-wrap;
+    }
+
+    /* THE FIX — visually-hidden label is invisible but accessible to screen readers */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- explanation comment block -->
+  <div class="comment-block">
+    <h2>Component 5 — Newsletter Email Label Fix</h2>
+    <p><strong>Issue:</strong> The email input had no &lt;label&gt;, no aria-label, and no aria-labelledby. Placeholder text alone fails WCAG 1.3.1 (Info and Relationships).</p>
+    <ul>
+      <li>Added <code>&lt;label for="newsletter-email"&gt;</code> linked to the input</li>
+      <li>Added <code>id="newsletter-email"</code> to the input</li>
+      <li>Label is visually hidden with the standard clip pattern so it doesn't break the design</li>
+    </ul>
+    <p><strong>WCAG:</strong> 1.3.1 Info and Relationships (Level A)</p>
+  </div>
+
+  <div class="demo-wrapper">
+
+    <!-- BEFORE -->
+    <div class="demo-box">
+      <div class="section-label before-label">BEFORE (broken)</div>
+      <div class="page-width">
+        <h3>Stay Connected</h3>
+        <p>Get first dibs on special offers, new releases, and more — straight to your inbox.</p>
+        <form>
+          <!-- no label, no id — placeholder only -->
+          <input type="email" name="email_address" placeholder="Your Email Address" required>
+          <input type="hidden" name="embed" value="true">
+          <button type="submit">STAY UPDATED</button>
+        </form>
+      </div>
+      <pre>
+// no label element
+// no aria-label or aria-labelledby
+// only placeholder — fails WCAG 1.3.1
+&lt;input type="email"
+  placeholder="Your Email Address"&gt;
+      </pre>
+    </div>
+
+    <!-- AFTER -->
+    <div class="demo-box">
+      <div class="section-label after-label">AFTER (fixed)</div>
+      <div class="page-width">
+        <h3>Stay Connected</h3>
+        <p>Get first dibs on special offers, new releases, and more — straight to your inbox.</p>
+        <form action="https://squareup.com/outreach/aGhlWb/subscribe" method="POST" target="_blank">
+          <!-- visually-hidden label links to input by id -->
+          <label for="newsletter-email" class="visually-hidden">Email Address</label>
+          <input type="email" id="newsletter-email" name="email_address" placeholder="Your Email Address" required>
+          <input type="hidden" name="embed" value="true">
+          <button type="submit">STAY UPDATED</button>
+        </form>
+      </div>
+      <pre>
+// label added — hidden visually, readable by screen readers
+// input given matching id
+&lt;label for="newsletter-email" class="visually-hidden"&gt;
+  Email Address
+&lt;/label&gt;
+&lt;input type="email" id="newsletter-email"
+  placeholder="Your Email Address"&gt;
+      </pre>
+    </div>
+
+  </div>
+
+</body>
+</html>
