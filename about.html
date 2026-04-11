@@ -1,0 +1,316 @@
+<!--
+  ACCESSIBILITY FIXES APPLIED — about.html
+  
+  1. <title> is descriptive — WCAG 2.4.2 Page Titled (Level A)
+  2. Heading hierarchy h1 > h2, no skipped levels — WCAG 1.3.1 (Level A)
+  3. Hero overlay (rgba 0,0,0,0.55) ensures white text contrast >= 4.5:1 — WCAG 1.4.3 (Level AA)
+  4. All images have descriptive alt text — WCAG 1.1.1 (Level A)
+  5. Sustainability links use descriptive text, no "click here" — WCAG 2.4.6 (Level AA)
+  6. :focus-visible outlines on all interactive elements — WCAG 2.4.7 (Level AA)
+  7. Semantic landmarks: <main>, <nav>, <footer>, <section aria-labelledby> — WCAG 1.3.1 (Level A)
+  8. Skip to main content link — WCAG 2.4.1 Bypass Blocks (Level A)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About OZO Coffee | OZO Coffee Roasters</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --brown: #3b2314;
+      --orange: #c8622a;
+      --bg: #faf8f5;
+      --text: #1a1a1a;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Georgia, serif;
+    }
+
+    /* skip link — hidden until focused */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 1rem;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      border-radius: 3px;
+      z-index: 9999;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* nav */
+    .navbar { background: var(--brown); }
+    .navbar-brand { color: #fff !important; font-weight: bold; letter-spacing: 0.05em; }
+    .nav-link { color: #e8d5c0 !important; }
+    .nav-link:hover { color: #fff !important; }
+
+    /* focus indicators */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #1a1a1a;
+      outline-offset: 2px;
+    }
+    .navbar a:focus-visible,
+    .footer-section a:focus-visible,
+    .footer-section button:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    /* hero */
+    .hero {
+      position: relative;
+      min-height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    /* dark overlay for contrast — WCAG 1.4.3 */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      padding: 2rem;
+    }
+    .hero-content h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .hero-content p  { font-size: 1.1rem; opacity: 0.9; }
+
+    /* sections */
+    section { padding: 3rem 0; }
+    section:nth-child(even) { background: #f0ebe4; }
+
+    h2 { color: var(--brown); margin-bottom: 1rem; }
+
+    /* sustainability cards */
+    .card { border: 1px solid #d9cfc5; background: #fff; height: 100%; }
+    .card-title { color: var(--brown); font-size: 1rem; font-weight: bold; }
+    .card-link {
+      color: var(--orange);
+      text-decoration: underline;
+      font-size: 0.9rem;
+    }
+    .card-link:hover { color: var(--brown); }
+
+    /* footer */
+    .footer-section {
+      background: var(--brown);
+      color: #e8d5c0;
+      padding: 2.5rem 1rem;
+      text-align: center;
+    }
+    .footer-section h3 { color: #f5c97a; margin-bottom: 0.4rem; font-size: 1.1rem; }
+    .footer-section p  { font-size: 0.9rem; margin-bottom: 1rem; }
+
+    .footer-section input[type="email"] {
+      padding: 0.5rem 0.8rem;
+      border: none;
+      border-radius: 3px 0 0 3px;
+      font-size: 0.9rem;
+      width: 220px;
+    }
+    .footer-section button {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0 3px 3px 0;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .footer-section button:hover { background: #a04e12; }
+
+    .footer-nav { margin: 1.5rem 0 1rem; }
+    .footer-nav a {
+      color: #e8d5c0;
+      margin: 0 0.6rem;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .footer-nav a:hover { color: #fff; text-decoration: underline; }
+
+    .footer-copy { font-size: 0.8rem; color: #b09e8e; }
+
+    /* visually hidden label */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- skip link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- nav -->
+  <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+    <div class="container">
+      <a class="navbar-brand" href="#">OZO Coffee</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+        aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Shop Coffee</a></li>
+          <li class="nav-item"><a class="nav-link" href="locations.html">Locations</a></li>
+          <li class="nav-item"><a class="nav-link" aria-current="page" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Wholesale</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- hero -->
+    <div class="hero">
+      <img src="https://ozocoffee.com/cdn/shop/files/roastery.jpg"
+           alt="Interior of OZO Coffee Roastery in Boulder, Colorado">
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content">
+        <h1>About OZO Coffee</h1>
+        <p>Ethically Sourced. Meticulously Roasted.</p>
+      </div>
+    </div>
+
+    <!-- about -->
+    <section aria-labelledby="about-heading">
+      <div class="container">
+        <h2 id="about-heading">About OZO Coffee Company</h2>
+        <p>OZO Coffee Company is a coffee roaster &amp; retail operator based in Boulder, Colorado. Founded in 2007 by Justin Hartman, OZO Coffee has based its growth on core principles of service, quality, community, and sustainability.</p>
+      </div>
+    </section>
+
+    <!-- mission -->
+    <section aria-labelledby="mission-heading">
+      <div class="container">
+        <h2 id="mission-heading">Our Mission</h2>
+        <p class="fw-semibold" style="color: var(--orange);">To support &amp; connect diverse communities through coffee</p>
+        <p class="mt-2">We work to make a positive impact through investing ethically in our supply chain, devoting time and resources to develop our local, national, and international coffee community, contributing to local schools, organizations, and causes that help our community, supporting our staff, providing an excellent product and service to our wholesale and retail customers, and providing a hospitable community space in our cafes where people receive excellent service, excellent products, and can connect with their community.</p>
+      </div>
+    </section>
+
+    <!-- practices -->
+    <section aria-labelledby="practices-heading">
+      <div class="container">
+        <h2 id="practices-heading">Our Practices</h2>
+        <p>We are committed to sourcing ethically and sustainably grown coffees from around the world. Through building strong relationships with our farmers, we ensure consistent harvest practices, delivering the highest quality throughout the entire supply chain from seed to cup. Many of the lots we source are Organic, Fair Trade, and Rainforest Alliance certified. We also use compostable and recyclable packaging materials in each sector of our business. Small batches are roasted with meticulous care using our Diedrich and Gothot coffee roasters. Roast profiles are perfected for each coffee to develop and highlight the best characteristics from every region.</p>
+      </div>
+    </section>
+
+    <!-- sustainability cards -->
+    <section aria-labelledby="sustainability-heading">
+      <div class="container">
+        <h2 id="sustainability-heading">Sustainability in Action</h2>
+        <div class="row g-4 mt-1">
+
+          <div class="col-md-6">
+            <div class="card p-3">
+              <div class="card-body">
+                <p class="card-title">Own Cup Program</p>
+                <p class="card-text">$0.25 off every drink when you bring a reusable cup. In 2024, this kept over 42,000 disposable cups out of the landfill.</p>
+                <a class="card-link" href="/collections/drinkware">Explore Reusable Drinkware</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card p-3">
+              <div class="card-body">
+                <p class="card-title">Canister Program</p>
+                <p class="card-text">Bring your Airscape canister into any OZO café and we'll fill it with 1lb of coffee for the price of a 12oz bag. Over 25,000 refills completed.</p>
+                <a class="card-link" href="/collections/canister">Shop Refillable Canisters</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card p-3">
+              <div class="card-body">
+                <p class="card-title">GaeaStar Clay Cups</p>
+                <p class="card-text">Compostable clay cups for reuse or return to the Earth. In 2024 we sold 1,770 GaeaStar cups.</p>
+                <a class="card-link" href="https://ozocoffee.com/pages/about-ozo-coffee">Learn more about GaeaStar</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card p-3">
+              <div class="card-body">
+                <p class="card-title">Housemade Milk</p>
+                <p class="card-text">We craft our own cashew-almond milk in-house. In 2024, prevented over 3,200 cartons from landfills.</p>
+                <a class="card-link" href="https://ozocoffee.com/pages/about-ozo-coffee">Learn about our housemade milk</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- footer -->
+  <footer class="footer-section" aria-label="Site footer">
+    <div class="container">
+      <h3>Stay Connected</h3>
+      <p>Get first dibs on special offers, new releases, and more — straight to your inbox.</p>
+      <form action="https://squareup.com/outreach/aGhlWb/subscribe" method="POST" target="_blank"
+            style="display:inline-flex; flex-wrap:wrap; gap:0; justify-content:center;">
+        <!-- visually-hidden label links to input — WCAG 1.3.1 -->
+        <label for="footer-email" class="visually-hidden">Email Address</label>
+        <input type="email" id="footer-email" name="email_address"
+               placeholder="Your Email Address" required>
+        <input type="hidden" name="embed" value="true">
+        <button type="submit">STAY UPDATED</button>
+      </form>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#">Home</a>
+        <a href="#">Shop Coffee</a>
+        <a href="locations.html">Locations</a>
+        <a href="about.html">About</a>
+        <a href="#">Wholesale</a>
+      </nav>
+
+      <p class="footer-copy">&copy; 2025 OZO Coffee Roasters. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

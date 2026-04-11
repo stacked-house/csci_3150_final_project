@@ -1,0 +1,359 @@
+<!--
+  ACCESSIBILITY FIXES APPLIED — locations.html
+  =============================================
+  1. <title> is descriptive — WCAG 2.4.2 Page Titled (Level A)
+  2. Each location wrapped in <article> with <h2> — WCAG 1.3.1 (Level A)
+  3. Addresses in <address> semantic element — WCAG 1.3.1 (Level A)
+  4. Phone numbers as <a href="tel:"> clickable links — WCAG 2.5.3 (Level A)
+  5. Google Maps links use descriptive text "Get directions to [Location]" — WCAG 2.4.6 (Level AA)
+  6. All images have descriptive alt text — WCAG 1.1.1 (Level A)
+  7. :focus-visible outlines on all interactive elements — WCAG 2.4.7 (Level AA)
+  8. Newsletter form label linked by id — WCAG 1.3.1 (Level A)
+  9. Section landmarks with aria-labels — WCAG 1.3.1 (Level A)
+  10. Skip to main content link — WCAG 2.4.1 Bypass Blocks (Level A)
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Locations | OZO Coffee Roasters</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --brown: #3b2314;
+      --orange: #c8622a;
+      --bg: #faf8f5;
+      --text: #1a1a1a;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Georgia, serif;
+    }
+
+    /* skip link — hidden until focused */
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: 1rem;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      border-radius: 3px;
+      z-index: 9999;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* nav */
+    .navbar { background: var(--brown); }
+    .navbar-brand { color: #fff !important; font-weight: bold; letter-spacing: 0.05em; }
+    .nav-link { color: #e8d5c0 !important; }
+    .nav-link:hover { color: #fff !important; }
+
+    /* focus indicators */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #1a1a1a;
+      outline-offset: 2px;
+    }
+    .navbar a:focus-visible,
+    .footer-section a:focus-visible,
+    .footer-section button:focus-visible {
+      outline: 3px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    /* page header */
+    .page-header {
+      background: var(--brown);
+      color: #fff;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+    .page-header h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    .page-header p  { color: #e8d5c0; max-width: 640px; margin: 0 auto; font-size: 1rem; }
+
+    /* location articles */
+    .location-section { padding: 3rem 0; border-bottom: 1px solid #d9cfc5; }
+    .location-section:last-of-type { border-bottom: none; }
+    .location-section:nth-child(even) { background: #f0ebe4; }
+
+    .location-section img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .location-section h2 { color: var(--brown); margin-bottom: 0.75rem; font-size: 1.4rem; }
+
+    address {
+      font-style: normal;
+      line-height: 1.8;
+      margin-bottom: 0.75rem;
+    }
+
+    .hours { margin-bottom: 0.75rem; color: #444; font-size: 0.95rem; }
+
+    .phone-link {
+      color: var(--orange);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .phone-link:hover { color: var(--brown); text-decoration: underline; }
+
+    .map-link {
+      display: inline-block;
+      margin-top: 0.75rem;
+      background: var(--brown);
+      color: #fff;
+      padding: 0.45rem 1rem;
+      border-radius: 3px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .map-link:hover { background: var(--orange); color: #fff; }
+
+    /* footer */
+    .footer-section {
+      background: var(--brown);
+      color: #e8d5c0;
+      padding: 2.5rem 1rem;
+      text-align: center;
+    }
+    .footer-section h3 { color: #f5c97a; margin-bottom: 0.4rem; font-size: 1.1rem; }
+    .footer-section p  { font-size: 0.9rem; margin-bottom: 1rem; }
+
+    .footer-section input[type="email"] {
+      padding: 0.5rem 0.8rem;
+      border: none;
+      border-radius: 3px 0 0 3px;
+      font-size: 0.9rem;
+      width: 220px;
+    }
+    .footer-section button {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0 3px 3px 0;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .footer-section button:hover { background: #a04e12; }
+
+    .footer-nav { margin: 1.5rem 0 1rem; }
+    .footer-nav a {
+      color: #e8d5c0;
+      margin: 0 0.6rem;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .footer-nav a:hover { color: #fff; text-decoration: underline; }
+
+    .footer-copy { font-size: 0.8rem; color: #b09e8e; }
+
+    /* visually hidden label */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- skip link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- nav -->
+  <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+    <div class="container">
+      <a class="navbar-brand" href="#">OZO Coffee</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+        aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Shop Coffee</a></li>
+          <li class="nav-item"><a class="nav-link" aria-current="page" href="locations.html">Locations</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Wholesale</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- page header -->
+  <header class="page-header">
+    <h1>Our Cafés</h1>
+    <p>Explore OZO Coffee across five locations in Boulder and Longmont, each with its own character and all serving the same fresh-roasted specialty coffee and handcrafted drinks.</p>
+  </header>
+
+  <main id="main-content">
+
+    <!-- Arapahoe -->
+    <div class="location-section">
+      <div class="container">
+        <article aria-labelledby="loc-arapahoe">
+          <div class="row align-items-center g-4">
+            <div class="col-md-5">
+              <img src="https://ozocoffee.com/cdn/shop/files/Arapahoe-Summer.jpg"
+                   alt="Exterior of OZO Coffee Arapahoe location in Boulder, Colorado on a summer day">
+            </div>
+            <div class="col-md-7">
+              <h2 id="loc-arapahoe">Arapahoe</h2>
+              <address>
+                5340 Arapahoe Avenue, Boulder, CO 80303<br>
+                <a class="phone-link" href="tel:+13034400233">303.440.0233</a>
+              </address>
+              <p class="hours">Mon–Sat 6am–6pm | Sunday 7am–5pm</p>
+              <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=5340+Arapahoe+Avenue,+Boulder,+CO+80303"
+                 target="_blank" rel="noopener">Get directions to Arapahoe</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- West Pearl -->
+    <div class="location-section">
+      <div class="container">
+        <article aria-labelledby="loc-westpearl">
+          <div class="row align-items-center g-4 flex-md-row-reverse">
+            <div class="col-md-5">
+              <img src="https://ozocoffee.com/cdn/shop/files/Pearl-Summer-Patio.jpg"
+                   alt="Outdoor patio of OZO Coffee West Pearl location on Pearl Street in Boulder">
+            </div>
+            <div class="col-md-7">
+              <h2 id="loc-westpearl">West Pearl</h2>
+              <address>
+                1015 Pearl Street, Boulder, CO 80302<br>
+                <a class="phone-link" href="tel:+13036454885">303.645.4885</a>
+              </address>
+              <p class="hours">Mon–Sat 6am–6pm | Sunday 7am–6pm</p>
+              <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=1015+Pearl+Street,+Boulder,+CO+80302"
+                 target="_blank" rel="noopener">Get directions to West Pearl</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Roastery Café -->
+    <div class="location-section">
+      <div class="container">
+        <article aria-labelledby="loc-roastery">
+          <div class="row align-items-center g-4">
+            <div class="col-md-5">
+              <img src="https://ozocoffee.com/cdn/shop/files/roastery.jpg"
+                   alt="Interior of OZO Coffee Roastery Café showing the roasting equipment in Boulder">
+            </div>
+            <div class="col-md-7">
+              <h2 id="loc-roastery">Roastery Café</h2>
+              <address>
+                1898 S Flatiron Ct #110, Boulder, CO 80301<br>
+                <a class="phone-link" href="tel:+13033960302">303.396.0302</a>
+              </address>
+              <p class="hours">Mon–Fri 7am–2pm</p>
+              <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=1898+S+Flatiron+Ct+%23110,+Boulder,+CO+80301"
+                 target="_blank" rel="noopener">Get directions to Roastery Café</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- East Pearl -->
+    <div class="location-section">
+      <div class="container">
+        <article aria-labelledby="loc-eastpearl">
+          <div class="row align-items-center g-4 flex-md-row-reverse">
+            <div class="col-md-5">
+              <img src="https://ozocoffee.com/cdn/shop/files/eastpearl.jpg"
+                   alt="Exterior of OZO Coffee East Pearl location on Pearl Street in Boulder">
+            </div>
+            <div class="col-md-7">
+              <h2 id="loc-eastpearl">East Pearl</h2>
+              <address>
+                1521 Pearl St, Boulder, CO 80302<br>
+                <a class="phone-link" href="tel:+13034495173">303.449.5173</a>
+              </address>
+              <p class="hours">Sun–Thurs 7am–5pm | Fri–Sat 7am–6pm</p>
+              <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=1521+Pearl+St,+Boulder,+CO+80302"
+                 target="_blank" rel="noopener">Get directions to East Pearl</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Longmont -->
+    <div class="location-section">
+      <div class="container">
+        <article aria-labelledby="loc-longmont">
+          <div class="row align-items-center g-4">
+            <div class="col-md-5">
+              <img src="https://ozocoffee.com/cdn/shop/files/Longmont-Outside-1.jpg"
+                   alt="Exterior of OZO Coffee Longmont location in Longmont, Colorado">
+            </div>
+            <div class="col-md-7">
+              <h2 id="loc-longmont">Longmont</h2>
+              <address>
+                1232-A S. Hover Road #400, Longmont, CO 80501<br>
+                <a class="phone-link" href="tel:+17206006689">720.600.6689</a>
+              </address>
+              <p class="hours">Mon–Sat 6am–5pm | Sunday 7am–5pm</p>
+              <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=1232-A+S.+Hover+Road+%23400,+Longmont,+CO+80501"
+                 target="_blank" rel="noopener">Get directions to Longmont</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- footer -->
+  <footer class="footer-section" aria-label="Site footer">
+    <div class="container">
+      <h3>Stay Connected</h3>
+      <p>Get first dibs on special offers, new releases, and more — straight to your inbox.</p>
+      <form action="https://squareup.com/outreach/aGhlWb/subscribe" method="POST" target="_blank"
+            style="display:inline-flex; flex-wrap:wrap; gap:0; justify-content:center;">
+        <!-- visually-hidden label links to input — WCAG 1.3.1 -->
+        <label for="footer-email" class="visually-hidden">Email Address</label>
+        <input type="email" id="footer-email" name="email_address"
+               placeholder="Your Email Address" required>
+        <input type="hidden" name="embed" value="true">
+        <button type="submit">STAY UPDATED</button>
+      </form>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#">Home</a>
+        <a href="#">Shop Coffee</a>
+        <a href="locations.html">Locations</a>
+        <a href="about.html">About</a>
+        <a href="#">Wholesale</a>
+      </nav>
+
+      <p class="footer-copy">&copy; 2025 OZO Coffee Roasters. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
